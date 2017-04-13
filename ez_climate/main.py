@@ -24,7 +24,7 @@ m = np.array([0.67756584,0.85225621,0.67448498,1.06584066,0.96022359,0.94935034
 
 header, indices, data = import_csv("DLW_research_runs", indices=2)
 
-for i in range(24, 35):
+for i in range(35, 45):
 	name = indices[i][1]
 	a, ra, eis, pref, temp, tail, growth, tech_chg, tech_scale, joinp, maxp, on, maps = data[i]
 	print(name, ra, eis)
