@@ -10,7 +10,7 @@ from optimization import *
 
 header, indices, data = import_csv("DLW_research_runs", indices=2)
 
-for i in range(24):
+for i in range(0,12):
 	name = indices[i][1]
 	a, ra, eis, pref, temp, tail, growth, tech_chg, tech_scale, joinp, maxp, on, maps = data[i]
 	if on == 1.0:
@@ -37,16 +37,12 @@ for i in range(24):
 	if a <= 2.0:
 		ga_model = GeneticAlgorithm(pop_amount=150, num_generations=150, cx_prob=0.8, mut_prob=0.5, 
 							bound=2.0, num_feature=63, utility=u, print_progress=True)
-		if i in (0,12):
-			gs_model = GradientSearch(learning_rate=0.0001, var_nums=63, utility=u, accuracy=1e-8, 
-							  iterations=300, print_progress=True)
-			final_pop, fitness = ga_model.run()
-			sort_pop = final_pop[np.argsort(fitness)][::-1]
-			m_opt, u_opt = gs_model.run(initial_point_list=sort_pop, topk=1)
-		else:
-			gs_model = GradientSearch(learning_rate=0.0001, var_nums=63, utility=u, accuracy=1e-8, 
-							  iterations=200, print_progress=True)
-			m_opt, u_opt = gs_model.run(initial_point_list=[m_opt], topk=1)
+		
+		gs_model = GradientSearch(learning_rate=0.0001, var_nums=63, utility=u, accuracy=1e-8, 
+						  iterations=300, print_progress=True)
+		final_pop, fitness = ga_model.run()
+		sort_pop = final_pop[np.argsort(fitness)][::-1]
+		m_opt, u_opt = gs_model.run(initial_point_list=sort_pop, topk=1)
 		
 		utility_t, cons_t, cost_t, ce_t = u.utility(m_opt, return_trees=True)
 		save_output(m_opt, u, utility_t, cons_t, cost_t, ce_t, prefix=name)
